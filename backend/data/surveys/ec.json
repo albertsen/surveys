@@ -1,0 +1,42 @@
+{
+    "id": "ec",
+    "title": "Enterprise Commerce Survey",
+    "questions": [
+        {
+            "id": "name",
+            "type": "text",
+            "title": "Your name",
+            "mandatory": false,
+            "maxlength": 100
+        },
+        {
+            "id": "department",
+            "type": "selection",
+            "title": "Your department",
+            "mandatory": true,
+            "options": {
+                "prodDev": "Product Development",
+                "pm": "Product Management",
+                "architecture": "Architecture",
+                "security": "Security",
+                "infra": "Infrastructure"
+            }
+        },
+        {
+            "id": "jobHappiness",
+            "type": "rating",
+            "title": "How happy are you with your job?",
+            "mandatory": true,
+            "range": [1, 2, 3, 4, 5],
+            "lowEndLabel": "Not happy at all",
+            "highEndLabel": "Just perfect"
+        },
+        {
+            "id": "comment",
+            "type": "comment",
+            "title": "Any additional comments?",
+            "mandatory": false,
+            "maxlength": 1000
+        }
+    ]
+}
