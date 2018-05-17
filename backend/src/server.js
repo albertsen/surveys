@@ -1,19 +1,24 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const surveyService = require('./survey');
+const surveyService = require('./services');
 const log = require('./utils/log');
+const mkdirp = require('mkdirp');
+const config = require('./config');
 
 const app = express();
-app.use(bodyParser.json());    
+app.use(bodyParser.json());
 app.use(cors());
 
 function sendStatus(res, status, message) {
     res.status(status);
-    res.json({ message: message });
+    res.json({
+        message: message
+    });
 }
 
 function sendError(res, message) {
+    log.error(message);
     sendStatus(res, 500, message);
 }
 
@@ -33,7 +38,13 @@ app.get('/surveys', (req, res) => {
 app.post('/responses', (req, res) => {
     surveyService.saveResponse(req.body)
         .then(r => res.sendStatus(200))
-        .catch(e => console.log(e));
+        .catch((err) => sendError(res, err));
+});
+
+Object.values(config.dir).forEach(d => {
+    if (mkdirp.sync(d)) {
+        log.info("Created dir: " + d);
+    }
 });
 
 app.listen(3000, () => log.info('Server listening on port 3000!'));
