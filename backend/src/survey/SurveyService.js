@@ -19,11 +19,11 @@ class SurveyService {
         log.info("Response directory: " + this.responsedir);
         mkdirp.sync(this.responsedir);
         this.jsonValidator = new Ajv();
-        this.jsonValidator.addSchema(this.loadSchema(__dirname + "/../../schemas/survey.schema.json"), "survey");
-        this.jsonValidator.addSchema(this.loadSchema(__dirname + "/../../schemas/responses.schema.json"), "responses");
+        this.jsonValidator.addSchema(this._loadSchema(__dirname + "/../../schemas/survey.schema.json"), "survey");
+        this.jsonValidator.addSchema(this._loadSchema(__dirname + "/../../schemas/responses.schema.json"), "responses");
     }
 
-    loadSchema(file) {
+    _loadSchema(file) {
         let schemaFile = path.normalize(file);
         let data = fs.readFileSync(schemaFile);
         return JSON.parse(data);
