@@ -26,3 +26,20 @@ describe("Survey API", function () {
     });
 
 });
+
+const validResponse = {
+    "surveyId": "ec",
+    "responses": {
+    	"name": "Jürgen Albertsen",
+    	"department": "productDev",
+    	"jobHappiness": 5,
+    	"commment": "Nope"
+    }
+};
+
+describe("Response API", function () {
+    it("should save a resposse", () => {
+        let response = chakram.post(url + "/responses", validResponse);
+        return expect(response).to.have.status(200);
+    });
+});

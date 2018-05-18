@@ -37,7 +37,7 @@ app.get('/surveys', (req, res) => {
 });
 
 app.post('/responses', (req, res) => {
-    surveyService.saveResponse(req.body)
+    responseService.saveResponse(req.body)
         .then(r => res.sendStatus(200))
         .catch((err) => sendError(res, err));
 });

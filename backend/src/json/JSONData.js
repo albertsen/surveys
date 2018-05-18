@@ -41,6 +41,7 @@ class JSONData {
         let dir = path.dirname(file);
         mkdirp.sync(dir);
         fs.writeFileSync(file, JSON.stringify(this.data), 'UTF-8');
+        return this.data;
     }
 
     loadFromFile(file) {
