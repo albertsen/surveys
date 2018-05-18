@@ -1,6 +1,6 @@
 const JSONValidator = require('./JSONValidator');
 
 module.exports = {
-    ec: new JSONValidator('ec'),
-    reponse: new JSONValidator('response')
+    survey: new JSONValidator('survey'),
+    response: new JSONValidator('response')
 }

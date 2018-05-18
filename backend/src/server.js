@@ -1,8 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const surveyService = require('./services');
-const log = require('./utils/log');
+const surveyService = require('./services/SurveyService');
+const responseService = require('./services/ResponseService');
+const log = require('./log');
 const mkdirp = require('mkdirp');
 const config = require('./config');
 
@@ -41,7 +42,7 @@ app.post('/responses', (req, res) => {
         .catch((err) => sendError(res, err));
 });
 
-Object.values(config.dir).forEach(d => {
+Object.values(config.dirs).forEach(d => {
     if (mkdirp.sync(d)) {
         log.info("Created dir: " + d);
     }
