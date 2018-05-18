@@ -10,8 +10,16 @@ const JSONData = require('../json/JSONData');
 class SurveyService {
 
     getSurvey(id) {
-        let file = path.normalize(config.dirs.surveys + "/" + id + ".json");
-        return new JSONData('survey').loadFromFile(file);
+        return new Promise((resolve, reject) => {
+            let file = path.normalize(config.dirs.surveys + "/" + id + ".json");
+            try {
+                let survey = new JSONData('survey').loadFromFile(file);
+                resolve(survey);
+            }
+            catch {
+                reject(err);
+            }
+        })
     }
 
     getSurveys() {
