@@ -1,34 +1,37 @@
-var chakram = require('chakram');
+const chakram = require('chakram');
+const jobSurvey = require('./data/surveys/job.json');
+
 expect = chakram.expect;
 
 const url = 'http://localhost:3000'
 
 describe("Survey API", function () {
+    it("should create survey", () => {
+        let response = chakram.put(url + "/surveys/job", jobSurvey);
+        return expect(response).to.have.status(201);
+    });
     it("should return an overview list of surveys", () => {
         let response = chakram.get(url + "/surveys");
         expect(response).to.have.status(200);
         expect(response).to.comprise.of.json(
             [{
-                "id": "ec",
-                "title": "Enterprise Commerce Survey"
-            }, {
-                "id": "music",
-                "title": "Music"
+                "id": "job",
+                "title": "Job Survey"
             }]
         );
         return chakram.wait();
     });
     it("should return a valid survey", () => {
-        let response = chakram.get(url + "/surveys/ec");
+        let response = chakram.get(url + "/surveys/job");
         expect(response).to.have.status(200);
-        expect(response).to.comprise.of.json(require('../data/surveys/ec.json'));
+        expect(response).to.comprise.of.json(jobSurvey);
         return chakram.wait();
     });
 
 });
 
 const validResponse = {
-    "surveyId": "ec",
+    "surveyId": "job",
     "responses": {
     	"name": "Jürgen Albertsen",
     	"department": "productDev",

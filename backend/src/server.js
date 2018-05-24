@@ -34,8 +34,9 @@ app.get('/surveys', (req, res) => {
         .catch((err) => sendError(res, err));
 });
 
-app.post('/surveys', (req, res) => {
-    surveyService.saveSurvey(req.body)
+app.put('/surveys/:id', (req, res) => {
+    let id = req.params['id'];
+    surveyService.createSurvey(id, req.body)
         .then(r => res.sendStatus(201))
         .catch((err) => sendError(res, err));    
 });

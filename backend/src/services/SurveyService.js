@@ -20,7 +20,8 @@ class SurveyService {
                 if (!survey) return reject ("No survey given to create");
                 if (id != survey.id) return reject("ID of survey document doesn't match given ID");
                 let file = this._fileNameForSurvey(id);
-                new JSONData(survey).writeToFile(file);
+                new JSONData('survey', survey).writeToFile(file);
+                resolve(survey);
             }
             catch (err) {
                 reject(err);
