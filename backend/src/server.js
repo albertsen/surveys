@@ -11,16 +11,14 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-function sendStatus(res, status, message) {
+function sendStatus(res, status, body) {
     res.status(status);
-    res.json({
-        message: message
-    });
+    if (body) res.json(body);
 }
 
-function sendError(res, message) {
-    log.error(message);
-    sendStatus(res, 500, message);
+function sendError(res, error) {
+    log.error(error);
+    sendStatus(res, 500, { 'error': error} );
 }
 
 app.get('/surveys/:id', (req, res) => {
@@ -36,9 +34,15 @@ app.get('/surveys', (req, res) => {
         .catch((err) => sendError(res, err));
 });
 
+app.post('/surveys', (req, res) => {
+    surveyService.saveSurvey(req.body)
+        .then(r => res.sendStatus(201))
+        .catch((err) => sendError(res, err));    
+});
+
 app.post('/responses', (req, res) => {
     responseService.saveResponse(req.body)
-        .then(r => res.sendStatus(200))
+        .then(r => res.sendStatus(201))
         .catch((err) => sendError(res, err));
 });
 

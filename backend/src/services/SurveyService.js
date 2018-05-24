@@ -9,14 +9,37 @@ const JSONData = require('../json/JSONData');
 
 class SurveyService {
 
+    _fileNameForSurvey(id) {
+        return path.normalize(config.dirs.surveys + "/" + id + ".json");
+    }
+
+    saveSurvey(id, survey) {
+        return new Promise((resolve, reject) => {
+            try {
+                if (!id) return reject("No ID given for new survey");
+                if (!survey) return reject ("No survey given to create");
+                if (id != survey.id) return reject("ID of survey document doesn't match given ID");
+                let file = this._fileNameForSurvey(id);
+                new JSONData(survey).writeToFile(file);
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    createSurvey(id, survey) {
+        return this.saveSurvey(id, survey);
+    }
+
     getSurvey(id) {
         return new Promise((resolve, reject) => {
-            let file = path.normalize(config.dirs.surveys + "/" + id + ".json");
+            let file = this._fileNameForSurvey(id);
             try {
                 let survey = new JSONData('survey').loadFromFile(file);
                 resolve(survey);
             }
-            catch {
+            catch (err) {
                 reject(err);
             }
         })

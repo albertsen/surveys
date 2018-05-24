@@ -40,6 +40,6 @@ const validResponse = {
 describe("Response API", function () {
     it("should save a resposse", () => {
         let response = chakram.post(url + "/responses", validResponse);
-        return expect(response).to.have.status(200);
+        return expect(response).to.have.status(201);
     });
 });
