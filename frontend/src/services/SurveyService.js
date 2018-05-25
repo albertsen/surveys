@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: process.env.SERVER_URL
+  baseURL: process.env.SERVER_URL,
 });
 
 class SurveyService {
@@ -20,14 +20,20 @@ class SurveyService {
       });
   }
 
-  saveResponses(surveyId, responses) {
+  saveResponses(surveyId, responses, callbacks) {
     let payload = {
       surveyId: surveyId,
       responses: responses
     }
     return client.post("/responses", payload)
-      .catch(e => {
-        console.log(e);
+      .then(res => callbacks.success(res))
+      .catch(err => {
+        if (err.response && err.response.status == 422) {
+          callbacks.validationError(err.response.data.validationErrors);
+        }
+        else {
+          console.log("Unhandled error: " + err);
+        }
       });
   }
 

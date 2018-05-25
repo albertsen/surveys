@@ -22,34 +22,36 @@
 </template>
 
 <script>
-import surveyService from '../../services/SurveyService'
-import questions from './questions'
+import surveyService from "../../services/SurveyService";
+import questions from "./questions";
 
 export default {
   name: "SurveyForm",
   components: questions,
   methods: {
     submit: function() {
-      surveyService.saveResponses(this.survey.id, this.responses)
-        .then(responses => {
-          this.responses = { }
-        });
+      surveyService.saveResponses(this.survey.id, this.responses, {
+        success: res => {
+          this.responses = {};
+        },
+        validationError: errors => {
+          console.log(JSON.stringify(errors));
+        }
+      });
     }
   },
   data() {
     return {
-      survey: { },
-      responses: { },
-      validationResult: { }
+      survey: {},
+      responses: {},
+      validationResult: {}
     };
   },
   created() {
-    surveyService.getSurvey(this.$route.params.id)
-      .then(responses => {
-        this.survey = responses.data;
-      });
+    surveyService.getSurvey(this.$route.params.id).then(response => {
+      this.survey = response.data;
+    });
   }
-
 };
 </script>
 <style lang="scss">
