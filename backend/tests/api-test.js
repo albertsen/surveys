@@ -30,19 +30,16 @@ describe("Survey API", function () {
 
 });
 
-const validResponse = {
-    "surveyId": "job",
-    "responses": {
-    	"name": "Jürgen Albertsen",
-    	"department": "productDev",
-    	"jobHappiness": 5,
-    	"commment": "Nope"
-    }
-};
+const validResponse = require('./data/responses/validResponse.json');
+const invalidResponse = require('./data/responses/invalidResponse.json');
 
 describe("Response API", function () {
     it("should save a resposse", () => {
         let response = chakram.post(url + "/responses", validResponse);
         return expect(response).to.have.status(201);
+    });
+    it("should raise a validation error", () => {
+        let response = chakram.post(url + "/responses", invalidResponse);
+        return expect(response).to.have.status(422);
     });
 });

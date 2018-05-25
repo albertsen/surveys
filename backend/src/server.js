@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const surveyService = require('./services/SurveyService');
 const responseService = require('./services/ResponseService');
+const ValidationResult = require('./services/ValidationResult');
 const log = require('./log');
 const mkdirp = require('mkdirp');
 const config = require('./config');
@@ -17,34 +18,46 @@ function sendStatus(res, status, body) {
 }
 
 function sendError(res, error) {
-    log.error(error);
     sendStatus(res, 500, { 'error': error} );
+}
+
+function sendValidationError(res, validationResult) {
+    sendStatus(res, 422, validationResult.errors);
+}
+
+function handleError(res, error) {
+    if (error instanceof ValidationResult) {
+        sendValidationError(res, error);
+    }
+    else {
+        sendError(res, error);
+    }
 }
 
 app.get('/surveys/:id', (req, res) => {
     let id = req.params['id'];
     surveyService.getSurvey(id)
         .then((survey) => res.json(survey))
-        .catch((err) => sendError(res, err));
+        .catch((err) => handleError(res, err));
 });
 
 app.get('/surveys', (req, res) => {
     surveyService.getSurveys()
         .then((surveys) => res.json(surveys))
-        .catch((err) => sendError(res, err));
+        .catch((err) => handleError(res, err));
 });
 
 app.put('/surveys/:id', (req, res) => {
     let id = req.params['id'];
     surveyService.createSurvey(id, req.body)
         .then(r => res.sendStatus(201))
-        .catch((err) => sendError(res, err));    
+        .catch((err) => handleError(res, err));    
 });
 
 app.post('/responses', (req, res) => {
-    responseService.saveResponse(req.body)
+    responseService.saveResponses(req.body)
         .then(r => res.sendStatus(201))
-        .catch((err) => sendError(res, err));
+        .catch((err) => handleError(res, err));
 });
 
 Object.values(config.dirs).forEach(d => {

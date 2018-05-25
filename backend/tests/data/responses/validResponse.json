@@ -1,0 +1,9 @@
+{
+    "surveyId": "job",
+    "responses": {
+    	"name": "Jürgen Albertsen",
+    	"department": "prodDev",
+    	"jobHappiness": 5,
+    	"commment": "Nope"
+    }
+}

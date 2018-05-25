@@ -6,7 +6,7 @@
             "id": "name",
             "type": "text",
             "title": "Your name",
-            "mandatory": false,
+            "mandatory": true,
             "maxlength": 100
         },
         {
@@ -36,7 +36,7 @@
             "type": "comment",
             "title": "Any additional comments?",
             "mandatory": false,
-            "maxlength": 1000
+            "maxlength": 500
         }
     ]
 }
