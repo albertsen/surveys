@@ -18,11 +18,22 @@ function sendStatus(res, status, body) {
 }
 
 function sendError(res, error) {
-    sendStatus(res, 500, { 'error': error} );
+    let body = {
+        status: 500,
+        errorCode: 'ERROR',
+        message: error
+    }
+    sendStatus(res, 500, body);
 }
 
 function sendValidationError(res, validationResult) {
-    sendStatus(res, 422, validationResult.errors);
+    let body = {
+        status: 422,
+        errorCode: 'VALIDATION_ERROR',
+        message: 'Your input is not valid.',
+        validationErrors: validationResult.errors
+    }
+    sendStatus(res, 422, body);
 }
 
 function handleError(res, error) {

@@ -40,6 +40,28 @@ describe("Response API", function () {
     });
     it("should raise a validation error", () => {
         let response = chakram.post(url + "/responses", invalidResponse);
-        return expect(response).to.have.status(422);
+        expect(response).to.have.status(422);
+        expect(response).to.comprise.of.json(
+            {
+                "status": 422,
+                "errorCode": "VALIDATION_ERROR",
+                "message": "Your input is not valid.",
+                "validationErrors": [
+                    {
+                        "id": "name",
+                        "error": "Please provide a value."
+                    },
+                    {
+                        "id": "department",
+                        "error": "Not a valid selection."
+                    },
+                    {
+                        "id": "jobHappiness",
+                        "error": "Not a valid rating."
+                    }
+                ]
+            }
+        );
+        return chakram.wait();
     });
 });
