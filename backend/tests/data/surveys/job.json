@@ -6,14 +6,27 @@
             "id": "name",
             "type": "text",
             "title": "Your name",
-            "mandatory": true,
-            "maxlength": 100
+            "validations": {
+                "presence": {
+                    "mandatory": true,
+                    "message": "Please provide a name."
+                },
+                "length": {
+                    "max": 100,
+                    "message": "Name cannot be longer than 100 letters."
+                }
+            }
         },
         {
             "id": "department",
             "type": "selection",
             "title": "Your department",
-            "mandatory": true,
+            "validations": {
+                "presence": {
+                    "mandatory": true,
+                    "message": "Please select a depeartment."
+                }
+            },
             "options": {
                 "prodDev": "Product Development",
                 "pm": "Product Management",
@@ -26,17 +39,27 @@
             "id": "jobHappiness",
             "type": "rating",
             "title": "How happy are you with your job?",
-            "mandatory": true,
             "range": [1, 2, 3, 4, 5],
             "lowEndLabel": "Not happy at all",
-            "highEndLabel": "Just perfect"
+            "highEndLabel": "Just perfect",
+            "validations": {
+                "presence": {
+                    "mandatory": true,
+                    "message": "Please rate your job happiness."
+                }
+            }            
         },
         {
             "id": "comment",
             "type": "comment",
             "title": "Any additional comments?",
             "mandatory": false,
-            "maxlength": 500
+            "validations": {
+                "length": {
+                    "max": 500,
+                    "message": "Comment cannot be longer than 500 characters."
+                }
+            }
         }
     ]
 }
