@@ -58,7 +58,11 @@ describe("Response API", function () {
                     {
                         "id": "jobHappiness",
                         "error": "Not a valid rating."
-                    }
+                    },
+                    {
+                        "id": "comment",
+                        "error": "Cannot be longer than 500 letters."
+                    }                                
                 ]
             }
         );
