@@ -8,40 +8,6 @@ const JSONData = require('../json/JSONData');
 const surveyService = require('./SurveyService');
 const ValidationResult = require('./ValidationResult')
 
-const validators = {
-
-    common: function(question, response) {
-        if (question.mandatory && !response) {
-            return 'Please provide a value.';
-        }
-    },
-
-    text: function(question, response) {
-        if (response && question.maxlength > 0 && (response.length > question.maxlength)) {
-            return 'Cannot be longer than ' + question.maxlength + ' letters.'
-        }
-    },
-
-    selection: function(question, response) {
-        let validOptions = Object.keys(question.options);
-        if (!validOptions.includes(response)) {
-            return 'Not a valid selection.'
-        }
-    },
-
-    rating: function(question, response) {
-        let validOptions = question.range;
-        if (!validOptions.includes(response)) {
-            return 'Not a valid rating.'
-        }
-    },
-
-    comment: function(question, response) {
-        return validators.text(question, response);
-    }
-
-}
-
 class ResponseService {
 
     _validateResponse(survey, responses) {

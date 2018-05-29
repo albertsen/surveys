@@ -1,9 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const surveyService = require('./services/SurveyService');
-const responseService = require('./services/ResponseService');
-const ValidationResult = require('./services/ValidationResult');
+const surveyService = require('./surveys/SurveyService');
+const surveyResponseService = require('./surveys/SurveyResponseService');
+const ValidationResult = require('./validation/ValidationResult');
 const log = require('./log');
 const mkdirp = require('mkdirp');
 const config = require('./config');
@@ -66,7 +66,7 @@ app.put('/surveys/:id', (req, res) => {
 });
 
 app.post('/responses', (req, res) => {
-    responseService.saveResponses(req.body)
+    surveyResponseService.saveResponses(req.body)
         .then(r => res.sendStatus(201))
         .catch((err) => handleError(res, err));
 });

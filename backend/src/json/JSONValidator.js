@@ -5,7 +5,7 @@ class JSONValidator {
 
     constructor(schemaName) {
         this.schemaName = schemaName;
-        let schemaFile = path.normalize(__dirname + "/schemas/" + schemaName + ".json");
+        let schemaFile = path.normalize(__dirname + "/schemas/" + schemaName + "schema.json");
         ajv.addSchema(require(schemaFile), schemaName);
     }
 
