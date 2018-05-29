@@ -24,6 +24,7 @@
         }
     },
     "required": ["id", "title", "questions"],
+    "additionalProperties": false,
     "definitions": {
         "text": {
             "type": "object",
@@ -40,13 +41,12 @@
                     "type": "string",
                     "title": "Title of the question"
                 },
-                "mandatory": {
-                    "type": "boolean",
-                    "title": "Is it mandatory to answer this question?",
-                    "default": true
+                "validations": {
+                    "$ref": "#/definitions/validations"
                 }
             },
-            "required": ["type", "id", "title"]
+            "required": ["type", "id", "title"],
+            "additionalProperties": false
         },
         "selection": {
             "type": "object",
@@ -63,16 +63,15 @@
                     "type": "string",
                     "title": "Title of the question"
                 },
-                "mandatory": {
-                    "type": "boolean",
-                    "title": "Is it mandatory to answer this question?",
-                    "default": true
+                "validations": {
+                    "$ref": "#/definitions/validations"
                 },
                 "options": {
                     "$ref": "#/definitions/options"
                 }
             },
-            "required": ["type", "id", "title", "options"]
+            "required": ["type", "id", "title", "options"],
+            "additionalProperties": false
         },
         "rating": {
             "type": "object",
@@ -89,11 +88,9 @@
                     "type": "string",
                     "title": "Title of the question"
                 },
-                "mandatory": {
-                    "type": "boolean",
-                    "title": "Is it mandatory to answer this question?",
-                    "default": true
-                },
+                "validations": {
+                    "$ref": "#/definitions/validations"
+                },                
                 "range": {
                     "type": "array",
                     "title": "Is it mandatory to answer this question?",
@@ -110,7 +107,8 @@
                     "title": "The label of the high end of the range"
                 }
             },
-            "required": ["type", "id", "title", "range"]                
+            "required": ["type", "id", "title", "range"],
+            "additionalProperties": false             
         },
         "comment": {
             "type": "object",
@@ -138,7 +136,8 @@
                     "default": 500
                 }
             },
-            "required": ["type", "id", "title"]                
+            "required": ["type", "id", "title"],
+            "additionalProperties": false              
         },
         "options": {
             "type": "object",
