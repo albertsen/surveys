@@ -24,20 +24,23 @@
 <script>
 import surveyService from "../../services/SurveyService";
 import questions from "./questions";
+import responseValidationService from "../../services/ResponseValidationService";
 
 export default {
   name: "SurveyForm",
   components: questions,
   methods: {
     submit: function() {
-      surveyService.saveResponses(this.survey.id, this.responses, {
-        success: res => {
-          this.responses = {};
-        },
-        validationError: errors => {
-          console.log(JSON.stringify(errors));
-        }
-      });
+      let result = responseValidationService.validate(this.survey, this.responses);
+      console.log(JSON.stringify(result));
+    //   surveyService.saveResponses(this.survey.id, this.responses, {
+    //     success: res => {
+    //       this.responses = {};
+    //     },
+    //     validationError: errors => {
+    //       console.log(JSON.stringify(errors));
+    //     }
+    //   });
     }
   },
   data() {

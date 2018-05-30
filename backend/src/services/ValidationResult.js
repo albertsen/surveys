@@ -1,16 +1,13 @@
 class ValidationResult {
 
-    constructor() {
-        this.errors = [];
+    constructor(errors) {
+        this.errors = errors;
     }
 
-    addError(error) {
-        this.errors.push(error);
+    isValid() {
+        return !this.errors || this.errors.length == 0;
     }
 
-    isValid() {
-        return this.errors.length == 0;
-    }
 }
 
 module.exports = ValidationResult

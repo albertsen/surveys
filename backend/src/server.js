@@ -1,9 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const surveyService = require('./surveys/SurveyService');
-const surveyResponseService = require('./surveys/SurveyResponseService');
-const ValidationResult = require('./validation/ValidationResult');
+const surveyService = require('./services/SurveyService');
+const responseService = require('./services/ResponseService');
+const ValidationResult = require('./services/ValidationResult');
 const log = require('./log');
 const mkdirp = require('mkdirp');
 const config = require('./config');
@@ -23,6 +23,7 @@ function sendError(res, error) {
         errorCode: 'ERROR',
         message: error
     }
+    log.error(body);
     sendStatus(res, 500, body);
 }
 
@@ -66,7 +67,7 @@ app.put('/surveys/:id', (req, res) => {
 });
 
 app.post('/responses', (req, res) => {
-    surveyResponseService.saveResponses(req.body)
+    responseService.saveResponses(req.body)
         .then(r => res.sendStatus(201))
         .catch((err) => handleError(res, err));
 });

@@ -48,20 +48,20 @@ describe("Response API", function () {
                 "message": "Your input is not valid.",
                 "validationErrors": [
                     {
-                        "id": "name",
-                        "error": "Please provide a value."
+                        "questionId": "name",
+                        "errors": ["Please provide a name."]
                     },
                     {
-                        "id": "department",
-                        "error": "Not a valid selection."
+                        "questionId": "department",
+                        "errors": ["Invalid selection: noDept"]
                     },
                     {
-                        "id": "jobHappiness",
-                        "error": "Not a valid rating."
+                        "questionId": "jobHappiness",
+                        "errors": ["Selected value not in range: 10"]
                     },
                     {
-                        "id": "comment",
-                        "error": "Cannot be longer than 500 letters."
+                        "questionId": "comment",
+                        "errors": ["Comment cannot be longer than 500 characters."]
                     }                                
                 ]
             }
