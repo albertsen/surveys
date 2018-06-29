@@ -11,10 +11,12 @@
       <td :width="calculateRangeColumnWidth(question.range)"
           v-for="v in question.range"
           :key="v">
-            <input type="radio"
+            <input
+              type="radio"
               :id="question.id + '-' + v"
               v-model="responses[question.id]"
-              :value="v">
+              :value="v"
+              class="is-invalid">
             </td>
     </tr>
     <tr>
@@ -30,7 +32,8 @@ export default {
   name: 'RatingQuestion',
   props: [
     "question",
-    "responses"
+    "responses",
+    "state"
   ],
   methods: {
     rangeLabel: function(question, i) {

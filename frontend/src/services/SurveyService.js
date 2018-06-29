@@ -26,10 +26,10 @@ class SurveyService {
       responses: responses
     }
     return client.post("/responses", payload)
-      .then(res => callbacks.success(res))
+      .then(res => callbacks.onSuccess(res))
       .catch(err => {
         if (err.response && err.response.status == 422) {
-          callbacks.validationError(err.response.data.validationErrors);
+          callbacks.onValidationError(err.response.data.validationErrors);
         }
         else {
           console.log("Unhandled error: " + err);

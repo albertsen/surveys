@@ -8,7 +8,7 @@
         <div class="col-md-8 order-md-1">
           <div v-for="q in survey.questions" :key="q.id" class="question mb-3">
             <label :for="q.id">{{q.title}}<span v-if="q.mandatory">&nbsp;*</span></label>
-            <component v-bind:is="q.type + 'Question'" :question="q" :responses="responses"></component>
+            <component v-bind:is="q.type + 'Question'" :question="q" :responses="responses" :state="isValid(q.id)"></component>
             <div class="invalid-feedback" v-if="false">
               Invalid input
             </div>
@@ -24,23 +24,31 @@
 <script>
 import surveyService from "../../services/SurveyService";
 import questions from "./questions";
-import responseValidationService from "../../services/ResponseValidationService";
 
 export default {
   name: "SurveyForm",
   components: questions,
   methods: {
     submit: function() {
-      let result = responseValidationService.validate(this.survey, this.responses);
-      console.log(JSON.stringify(result));
-    //   surveyService.saveResponses(this.survey.id, this.responses, {
-    //     success: res => {
-    //       this.responses = {};
-    //     },
-    //     validationError: errors => {
-    //       console.log(JSON.stringify(errors));
-    //     }
-    //   });
+      surveyService.saveResponses(this.survey.id, this.responses, {
+        onSuccess: res => {
+          this.responses = {};
+          this.validationResult = {};
+        },
+        onValidationError: errors => {
+          this.validationResult = errors.reduce((result, e) => {
+            result[e.questionId] = {
+              valid: false,
+              message: e.errors[0]
+            }
+            return result;
+          }, {});
+        }
+      });
+    },
+    isValid: function(questionId) {
+      let res = this.validationResult[questionId];
+      return res != null ? res.valid : undefined;
     }
   },
   data() {

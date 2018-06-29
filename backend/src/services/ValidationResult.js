@@ -10,4 +10,4 @@ class ValidationResult {
 
 }
 
-module.exports = ValidationResult
+module.exports = ValidationResult;
