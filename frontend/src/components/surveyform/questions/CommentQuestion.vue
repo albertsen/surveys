@@ -1,10 +1,11 @@
 <template>
-  <b-form-textarea
+  <textarea
+    class="form-control"
     v-model="responses[question.id]"
     :rows="3"
-    :max-rows="6"
-    :state="state">
-  </b-form-textarea>
+    :class="{ 'is-invalid': valid == false }"
+    :max-rows="6">
+  </textarea>
 </template>
 <script>
 export default {
@@ -12,7 +13,7 @@ export default {
   props: [
     "question",
     "responses",
-    "state"
+    "valid"
   ]
 }
 </script>

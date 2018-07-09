@@ -16,7 +16,8 @@
               :id="question.id + '-' + v"
               v-model="responses[question.id]"
               :value="v"
-              class="is-invalid">
+              class="custom-control-input"
+              :class="{valid: valid}">
             </td>
     </tr>
     <tr>
@@ -33,7 +34,7 @@ export default {
   props: [
     "question",
     "responses",
-    "state"
+    "valid"
   ],
   methods: {
     rangeLabel: function(question, i) {

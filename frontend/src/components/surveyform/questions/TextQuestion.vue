@@ -1,10 +1,10 @@
 <template>
-  <b-form-input
+  <input
     type="text"
+    class="form-control"
     v-model.trim="responses[question.id]"
     :maxlength="question.maxlength || 70"
-    :state="state">
-  </b-form-input>
+    :class="{'is-invalid': valid == false}">
 </template>
 <script>
 export default {
@@ -12,7 +12,7 @@ export default {
   props: [
     "question",
     "responses",
-    "state"
+    "valid"
   ],
 }
 </script>

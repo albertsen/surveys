@@ -6,15 +6,16 @@
       </div>
       <div class="row justify-content-md-center">
         <div class="col-md-8 order-md-1">
-          <div v-for="q in survey.questions" :key="q.id" class="question mb-3">
-            <label :for="q.id">{{q.title}}<span v-if="q.mandatory">&nbsp;*</span></label>
-            <component v-bind:is="q.type + 'Question'" :question="q" :responses="responses" :state="isValid(q.id)"></component>
-            <div class="invalid-feedback" v-if="false">
-              Invalid input
+          <form id="survey-form">
+            <div v-for="q in survey.questions" :key="q.id" class="question mb-3">
+              <label :for="q.id">{{q.title}}<span v-if="q.mandatory">&nbsp;*</span></label>
+              <component v-bind:is="q.type + 'Question'" :question="q" :responses="responses" :valid="isValid(q.id)"></component>
+              <div class="invalid-feedback" style="display: block" v-if="isInvalid(q.id)">
+                {{ validationResult[q.id].message }}
+              </div>
             </div>
-          </div>
-          <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="submit()">Submit</button>
-
+            <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="submit()">Submit</button>
+          </form>
         </div>
       </div>
     </div>
@@ -36,6 +37,7 @@ export default {
           this.validationResult = {};
         },
         onValidationError: errors => {
+          console.log("Errors: " + JSON.stringify(errors));
           this.validationResult = errors.reduce((result, e) => {
             result[e.questionId] = {
               valid: false,
@@ -43,19 +45,24 @@ export default {
             }
             return result;
           }, {});
+          console.log("Validation result: " + JSON.stringify(this.validationResult));
         }
       });
     },
     isValid: function(questionId) {
       let res = this.validationResult[questionId];
       return res != null ? res.valid : undefined;
+    },
+    isInvalid: function(questionId) {
+      let res = this.validationResult[questionId];
+      return res != null ? !res.valid : false;
     }
   },
   data() {
     return {
       survey: {},
       responses: {},
-      validationResult: {}
+      validationResult: {},
     };
   },
   created() {

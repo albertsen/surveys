@@ -60,6 +60,10 @@
             "type": "comment",
             "title": "Any additional comments?",
             "validations": {
+                "presence": {
+                    "mandatory": true,
+                    "message": "Please enter a comment."
+                },
                 "length": {
                     "max": {
                         "value": 500,

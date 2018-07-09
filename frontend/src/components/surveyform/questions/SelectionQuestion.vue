@@ -1,7 +1,7 @@
 <template>
-  <b-form-select v-model="responses[question.id]" class="custom-select d-block w-100" :state="state">
+  <select v-model="responses[question.id]" class="custom-select d-block w-100" :class="{'is-invalid': valid == false}">
     <option v-for="(value, key) in question.options" v-bind:key="key" :value="key">{{ value }}</option>
-  </b-form-select>
+  </select>
 </template>
 <script>
 export default {
@@ -9,7 +9,7 @@ export default {
   props: [
     "question",
     "responses",
-    "state"
+    "valid"
   ]
 }
 </script>
