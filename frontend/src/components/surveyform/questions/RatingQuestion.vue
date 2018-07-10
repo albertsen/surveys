@@ -16,7 +16,6 @@
               :id="question.id + '-' + v"
               v-model="responses[question.id]"
               :value="v"
-              class="custom-control-input"
               :class="{valid: valid}">
             </td>
     </tr>
