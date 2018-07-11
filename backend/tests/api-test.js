@@ -10,10 +10,16 @@ describe("Survey API", function () {
         let response = chakram.put(url + "/surveys/job", jobSurvey);
         return expect(response).to.have.status(201);
     });
-    // it("should return a schema validation error", () => {
-    //     let response = chakram.put(url + "/surveys/invalid", { "areYouInvaid": true });
-    //     return expect(response).to.have.status(400);
-    // });
+    it("should return a schema validation error", () => {
+        let response = chakram.put(url + "/surveys/invalid", { "areYouInvalid": true });
+         expect(response).to.have.status(400);
+         expect(response).to.comprise.of.json({
+            "status": 400,
+            "errorCode": "JSON_VALIDATION_ERROR",
+            "message": "Invalid JSON document"
+        });
+        return chakram.wait();
+    });
     it("should return an overview list of surveys", () => {
         let response = chakram.get(url + "/surveys");
         expect(response).to.have.status(200);
@@ -42,10 +48,16 @@ describe("Response API", function () {
         let response = chakram.post(url + "/responses", validResponse);
         return expect(response).to.have.status(201);
     });
-    // it("should return a schema validation error", () => {
-    //     let response = chakram.post(url + "/responses", { "areYouInvaid": true });
-    //     return expect(response).to.have.status(400);
-    // });
+    it("should return a schema validation error", () => {
+        let response = chakram.post(url + "/responses", { "areYouInvalid": true });
+        expect(response).to.have.status(400);
+        expect(response).to.comprise.of.json({
+            "status": 400,
+            "errorCode": "JSON_VALIDATION_ERROR",
+            "message": "Invalid JSON document"
+        });
+        return chakram.wait();
+    });
     it("should raise a validation error", () => {
         let response = chakram.post(url + "/responses", invalidResponse);
         expect(response).to.have.status(422);

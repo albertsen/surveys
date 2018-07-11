@@ -1,5 +1,4 @@
 const log = require('../log');
-const ValidationResult = require("./ValidationResult");
 
 const validators = {
 
@@ -72,7 +71,7 @@ class ResponseValidationService {
             }
             return allErrors;
         }, []);
-        return new ValidationResult(errors);
+        return errors.length > 0 ? errors : null;
     }
 
 }
