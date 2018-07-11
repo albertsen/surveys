@@ -9,7 +9,6 @@ const surveyService = require("./SurveyService");
 const responseValidationService = require("./ResponseValidationService")
 
 class ResponseService {
-
     
     saveResponses(response) {
         return new Promise((resolve, reject) => {
