@@ -11,13 +11,16 @@
       <td :width="calculateRangeColumnWidth(question.range)"
           v-for="v in question.range"
           :key="v">
+          <div class="custom-control custom-radio" :class="{'is-invalid': valid == false}">
             <input
               type="radio"
               :id="question.id + '-' + v"
               v-model="responses[question.id]"
               :value="v"
-              :class="{valid: valid}">
-            </td>
+              class="custom-control-input">
+              <label class="custom-control-label" :for="question.id + '-' + v"></label>
+          </div>
+      </td>
     </tr>
     <tr>
       <td
@@ -52,12 +55,13 @@ export default {
 }
 </script>
 <style>
-/* table.rating {
-  border: 1px solid #ced4da;
-} */
-.is-invalid {
-  border: 1px solid #dc3545;
+.custom-radio {
+  padding-left: 2rem;
+}
+.is-invalid .custom-control-label::before {
+  background-color: #efa2a9;
 }
 </style>
+
 
 
