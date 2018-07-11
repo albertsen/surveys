@@ -23,7 +23,7 @@ class ResponseService {
                         let file = path.normalize(dir + "/" + timestamp + "-" + uuid() + ".json");
                         let validationResult = responseValidationService.validate(survey, response.responses);
                         if (!validationResult.isValid()) return reject(validationResult);
-                        let savedResponse = new JSONData("response", response).writeToFile(file);
+                        let savedResponse = new JSONData(response).writeToFile(file);
                         resolve(savedResponse);
                     })
                     .catch((err) => reject(err))
