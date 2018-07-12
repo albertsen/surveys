@@ -1,4 +1,5 @@
-const ValidationError = require("./services/ValidationError");
+const ValidationError = require("./errors/ValidationError");
+const NotFoundError = require("./errors/NotFoundError");
 const JSONValidationError = require("./json/JSONValidationError");
 
 
@@ -14,6 +15,11 @@ const errorMappings = (function(mappings) {
         errorCode: "JSON_VALIDATION_ERROR",
         message: "Invalid JSON document",
         detailsAttribute: "errors"
+    }
+    mappings[NotFoundError] = {
+        status: 404,
+        errorCode: "NOT_FOUND",
+        message: "The requested resource does not exist"
     }
     return mappings;
 })({});
@@ -48,6 +54,9 @@ function handleError(res, error) {
             errorMapping.errorCode,
             error[errorMapping.detailsAttribute]
         )
+    }
+    else if (error.message) {
+        sendError(res, error.message);
     }
     else {
         sendError(res, JSON.stringify(error));

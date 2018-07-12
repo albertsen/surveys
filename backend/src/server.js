@@ -6,7 +6,8 @@ const jsonValidators = require("./json/validators");
 const log = require("./log");
 const config = require("./config");
 const bodyParser = require("body-parser");
-const handleError = require("./handleError")
+const handleError = require("./handleError");
+const asyncHandler = require('express-async-handler')
 
 const app = express();
 app.use(bodyParser.json())
@@ -23,39 +24,32 @@ function validateJSONRequest(schema) {
     }
 }
 
-app.get("/surveys/:id", (req, res, next) => {
+app.get("/surveys/:id", asyncHandler(async (req, res, next) => {
     let id = req.params["id"];
-    surveyService.getSurvey(id)
-        .then(survey => {
-            res.json(survey);
-        })
-        .catch(err => next(err));
-});
+    let survey = await surveyService.getSurvey(id);
+    res.json(survey);
+}));
 
-app.get("/surveys", (req, res, next) => {
-    surveyService.getSurveys()
-        .then(surveys => res.json(surveys))
-        .catch(err => next(err));
-    }
-);
+app.get("/surveys", asyncHandler(async (req, res, next) => {
+    let surveys = await surveyService.getSurveys();
+    res.json(surveys);
+}));
 
 app.put("/surveys/:id",
     validateJSONRequest("survey"),
-    function(req, res, next) {
+    asyncHandler(async (req, res) => {
         let id = req.params["id"];
-        surveyService.createSurvey(id, req.body)
-            .then(r => res.sendStatus(201))
-            .catch(err => next(err));    
-    }
+        await surveyService.createSurvey(id, req.body)
+        res.sendStatus(201);
+    })
 );
 
 app.post("/responses", 
     validateJSONRequest("response"),
-    function(req, res, next) {
-        responseService.saveResponses(req.body)
-            .then(r => res.sendStatus(201))
-            .catch(err => next(err));
-    }
+    asyncHandler(async (req, res) => {
+        await responseService.saveResponses(req.body);
+        res.sendStatus(201);
+    })
 );
 
 // Error handler

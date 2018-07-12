@@ -37,7 +37,11 @@ describe("Survey API", function () {
         expect(response).to.comprise.of.json(jobSurvey);
         return chakram.wait();
     });
-
+    it("should return a 'not found' error", () => {
+        let response = chakram.get(url + "/surveys/doesnotexist");
+        expect(response).to.have.status(404);
+        return chakram.wait();
+    });
 });
 
 const validResponse = require('./data/responses/validResponse.json');

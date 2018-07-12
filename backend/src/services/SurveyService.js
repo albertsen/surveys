@@ -1,11 +1,11 @@
-const glob = require('glob');
-const path = require('path');
-const fs = require('fs');
-const dateFormat = require('dateformat');
-const uuid = require('uuid/v4');
-const log = require('../log');
-const config = require('../config');
-const JSONData = require('../json/JSONData');
+const glob = require("glob-promise");
+const path = require("path");
+const fs = require("fs");
+const dateFormat = require("dateformat");
+const uuid = require("uuid/v4");
+const log = require("../log");
+const config = require("../config");
+const JSONData = require("../json/JSONData");
 
 class SurveyService {
 
@@ -13,58 +13,33 @@ class SurveyService {
         return path.normalize(config.dirs.surveys + "/" + id + ".json");
     }
 
-    saveSurvey(id, survey) {
-        return new Promise((resolve, reject) => {
-            try {
-                if (!id) return reject("No ID given for new survey");
-                if (!survey) return reject ("No survey given to create");
-                if (id != survey.id) return reject("ID of survey document doesn't match given ID");
-                let file = this._fileNameForSurvey(id);
-                new JSONData(survey).writeToFile(file);
-                resolve(survey);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
+    async saveSurvey(id, survey) {
+        if (!id) throw new Error("No ID given for new survey");
+        if (!survey) throw new Error ("No survey given to create");
+        if (id != survey.id) throw new Error("ID of survey document doesn't match given ID");
+        let file = this._fileNameForSurvey(id);
+        return new JSONData(survey).writeToFile(file);
     }
 
-    createSurvey(id, survey) {
+    async createSurvey(id, survey) {
         return this.saveSurvey(id, survey);
     }
 
-    getSurvey(id) {
-        return new Promise((resolve, reject) => {
-            let file = this._fileNameForSurvey(id);
-            try {
-                let survey = new JSONData().loadFromFile(file);
-                resolve(survey);
-            }
-            catch (err) {
-                reject(err);
-            }
-        })
+    async getSurvey(id) {
+        let file = this._fileNameForSurvey(id);
+        return new JSONData().loadFromFile(file);
     }
 
-    getSurveys() {
-        return new Promise((resolve, reject) => {
-            glob(config.dirs.surveys + "/*.json", (err, files) => {
-                if (err) return reject(err);
-                try {
-                    let surveyList = files.map((f) => {
-                        let survey = new JSONData().loadFromFile(f);
-                        return {
-                            id: survey.id,
-                            title: survey.title
-                        }
-                    });
-                    resolve(surveyList);
-                }
-                catch (err) {
-                    reject(err);
-                }
-            });
-        })
+    async getSurveys() {
+        let files = await glob(config.dirs.surveys + "/*.json");
+        let surveys = await Promise.all(files.map(async (f) => {
+            let survey = await new JSONData().loadFromFile(f);
+            return {
+                id: survey.id,
+                title: survey.title
+            }
+        }));
+        return surveys;
     }
 
 }

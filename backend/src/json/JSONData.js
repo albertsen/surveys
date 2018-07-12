@@ -1,6 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const mkdirp = require('mkdirp');
+const util = require("util");
+const path = require("path");
+const mkdirp = util.promisify(require("mkdirp"));
+const NotFoundError = require("../errors/NotFoundError");
+const fs = require("fs");
+
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
 
 class JSONData {
 
@@ -9,7 +14,7 @@ class JSONData {
     }
 
     set data(data) {
-        if (typeof data == 'string') {
+        if (typeof data == "string") {
             data = JSON.parse(data);
         }
         this._data = data;
@@ -20,18 +25,24 @@ class JSONData {
     }
 
 
-    writeToFile(file) {
+    async writeToFile(file) {
         if (!file) throw new Error("Name of file to write JSON to cannot be empty");
         if (!this.data) throw new Error("Refuse to write empty JSON data to file: " + file);
         let dir = path.dirname(file);
-        mkdirp.sync(dir);
-        fs.writeFileSync(file, JSON.stringify(this.data), 'UTF-8');
-        return this.data;
+        await mkdirp(dir);
+        await writeFile(file, JSON.stringify(this.data), "UTF-8");
     }
 
-    loadFromFile(file) {
+    async loadFromFile(file) {
         if (!file) throw new Error("JSON file name to be loaded cannot be null");
-        this.data = fs.readFileSync(file, 'UTF-8');
+        try {
+            var content = await readFile(file, "UTF-8");
+        }
+        catch (err) {
+            if (err.code == 'ENOENT') throw new NotFoundError("File does not exist: " + file);
+            else throw err;
+        }
+        this.data = JSON.parse(content);
         return this.data;
     }
 }
