@@ -58,7 +58,7 @@ class ResponseValidationService {
             if (q.validations) {
                 Object.entries(q.validations).forEach(([ruleKey, rule]) => {
                     let validator = validators.rules[ruleKey];
-                    if (!validator) throw "Invalid validator: " + ruleKey;
+                    if (!validator) throw new Error("Invalid validator: " + ruleKey);
                     validator(value, rule, valueErrors);
                 })
             }

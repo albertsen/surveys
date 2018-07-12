@@ -21,8 +21,8 @@ class JSONData {
 
 
     writeToFile(file) {
-        if (!file) throw "Name of file to write JSON to cannot be empty";
-        if (!this.data) throw "Refuse to write empty JSON data to file: " + file;
+        if (!file) throw new Error("Name of file to write JSON to cannot be empty");
+        if (!this.data) throw new Error("Refuse to write empty JSON data to file: " + file);
         let dir = path.dirname(file);
         mkdirp.sync(dir);
         fs.writeFileSync(file, JSON.stringify(this.data), 'UTF-8');
@@ -30,7 +30,7 @@ class JSONData {
     }
 
     loadFromFile(file) {
-        if (!file) throw "JSON file name to be loaded cannot be null"
+        if (!file) throw new Error("JSON file name to be loaded cannot be null");
         this.data = fs.readFileSync(file, 'UTF-8');
         return this.data;
     }

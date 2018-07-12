@@ -1,13 +1,12 @@
-const express = require('express')
-const cors = require('cors')
-const surveyService = require('./services/SurveyService');
-const responseService = require('./services/ResponseService');
-const jsonValidators = require('./json/validators');
-const log = require('./log');
-const config = require('./config');
-const ru = require('./responseUtils');
-const bodyParser = require('body-parser');
-
+const express = require("express")
+const cors = require("cors")
+const surveyService = require("./services/SurveyService");
+const responseService = require("./services/ResponseService");
+const jsonValidators = require("./json/validators");
+const log = require("./log");
+const config = require("./config");
+const bodyParser = require("body-parser");
+const handleError = require("./handleError")
 
 const app = express();
 app.use(bodyParser.json())
@@ -15,26 +14,17 @@ app.use(cors());
 
 function validateJSONRequest(schema) {
     var validator = jsonValidators[schema];
-    if (!validator) throw "Unknown schema " + schema;
+    if (!validator) throw new Error("Unknown schema " + schema);
     return function(req, res, next) {
        let json = req.body;
        let result = validator.validate(json);
-       if (!result.valid) {
-            ru.sendError(
-                res, 
-                "Invalid JSON document",
-                400,
-                "JSON_VALIDATION_ERROR",
-                { validationErrors: result.errors }
-            );
-            return;
-       }
-       next();
+       if (result.valid) next()
+       else next(result.error);
     }
 }
 
-app.get('/surveys/:id', (req, res, next) => {
-    let id = req.params['id'];
+app.get("/surveys/:id", (req, res, next) => {
+    let id = req.params["id"];
     surveyService.getSurvey(id)
         .then(survey => {
             res.json(survey);
@@ -42,32 +32,33 @@ app.get('/surveys/:id', (req, res, next) => {
         .catch(err => next(err));
 });
 
-app.get('/surveys', (req, res, next) => {
+app.get("/surveys", (req, res, next) => {
     surveyService.getSurveys()
         .then(surveys => res.json(surveys))
         .catch(err => next(err));
     }
 );
 
-app.put('/surveys/:id',
+app.put("/surveys/:id",
     validateJSONRequest("survey"),
     function(req, res, next) {
-        let id = req.params['id'];
+        let id = req.params["id"];
         surveyService.createSurvey(id, req.body)
             .then(r => res.sendStatus(201))
             .catch(err => next(err));    
     }
 );
 
-app.post('/responses', 
+app.post("/responses", 
     validateJSONRequest("response"),
     function(req, res, next) {
         responseService.saveResponses(req.body)
-         .then(r => res.sendStatus(201))
-         .catch(err => next(err));
+            .then(r => res.sendStatus(201))
+            .catch(err => next(err));
     }
 );
 
+// Error handler
 app.use(function (err, req, res, next) {
     if (err.stack) {
         log.error(err.stack);
@@ -75,9 +66,9 @@ app.use(function (err, req, res, next) {
     else {
         log.error(err);
     }
-    ru.handleError(res, err);
+    handleError(res, err);
 });
 
 
 
-app.listen(3000, () => log.info('Server listening on port 3000!'));
+app.listen(3000, () => log.info("Server listening on port 3000!"));

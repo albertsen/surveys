@@ -1,5 +1,6 @@
-const path = require('path');
-const ajv = new require('ajv')();
+const path = require("path");
+const JSONValidationError = require("./JSONValidationError")
+const ajv = new require("ajv")();
 
 class JSONValidator {
 
@@ -10,23 +11,14 @@ class JSONValidator {
     }
 
     validate(json) {
-        if (json) {
-            if (typeof json == 'string') {
-                json = JSON.parse(json);
-            }
-            let valid = ajv.validate(this.schemaName, json);
-            return {
-                valid: valid,
-                errors: ajv.errors,
-                errorsText: () => ajv.errorsText()
-            }
+        if (!json) throw new Error("No JSON data");
+        if (typeof json == 'string') {
+            json = JSON.parse(json);
         }
-        else {
-            return {
-                valid: false,
-                errors: ["No JSON data"],
-                errorsText: () => "No JSON data"
-            }
+        let valid = ajv.validate(this.schemaName, json);
+        return {
+            valid: valid,
+            error: new JSONValidationError(ajv),
         }
     }
 }

@@ -65,8 +65,8 @@ describe("Response API", function () {
             {
                 "status": 422,
                 "errorCode": "VALIDATION_ERROR",
-                "message": "Your input is not valid.",
-                "validationErrors": [
+                "message": "Your input is not valid",
+                "details": [
                     {
                         "questionId": "name",
                         "errors": ["Please provide a name."]

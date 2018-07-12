@@ -1,21 +1,22 @@
 <template>
   <div id="survey">
     <div class="container">
+      <div class="row justify-content-md-center" style="margin-top: 1em">
+        <a href="/">Back</a>
+      </div>
       <div class="py-5 text-center">
         <h1>{{ survey.title }}</h1>
       </div>
       <div class="row justify-content-md-center">
         <div class="col-md-8 order-md-1">
-          <form id="survey-form">
-            <div v-for="q in survey.questions" :key="q.id" class="question mb-3">
-              <label :for="q.id">{{q.title}}<span v-if="q.mandatory">&nbsp;*</span></label>
-              <component v-bind:is="q.type + 'Question'" :question="q" :responses="responses" :valid="isValid(q.id)"></component>
-              <div class="invalid-feedback" style="display: block" v-if="isInvalid(q.id)">
-                {{ validationResult[q.id].message }}
-              </div>
+          <div v-for="q in survey.questions" :key="q.id" class="question mb-3">
+            <label :for="q.id">{{q.title}}<span v-if="q.mandatory">&nbsp;*</span></label>
+            <component v-bind:is="q.type + 'Question'" :question="q" :responses="responses" :valid="isValid(q.id)"></component>
+            <div class="invalid-feedback" style="display: block" v-if="isInvalid(q.id)">
+              {{ validationResult[q.id].message }}
             </div>
-            <button class="btn btn-primary btn-lg btn-block" type="submit" v-on:click="submit()">Submit</button>
-          </form>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" v-on:click="submit()">Submit</button>
         </div>
       </div>
     </div>
