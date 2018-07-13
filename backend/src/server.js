@@ -2,23 +2,20 @@ const express = require("express")
 const cors = require("cors")
 const surveyService = require("./services/SurveyService");
 const responseService = require("./services/ResponseService");
-const jsonValidators = require("./json/validators");
+const jsonValidationService = require("./services/JSONValidationService");
 const log = require("./log");
-const config = require("./config");
 const bodyParser = require("body-parser");
-const handleError = require("./handleError");
+const errorHandler = require("./errorHandler");
 const asyncHandler = require('express-async-handler')
 
 const app = express();
 app.use(bodyParser.json())
 app.use(cors());
 
-function validateJSONRequest(schema) {
-    var validator = jsonValidators[schema];
-    if (!validator) throw new Error("Unknown schema " + schema);
+function validateJSONRequest(schemaName) {
     return function(req, res, next) {
        let json = req.body;
-       let result = validator.validate(json);
+       let result = jsonValidationService.validate(json, schemaName)
        if (result.valid) next()
        else next(result.error);
     }
@@ -39,15 +36,16 @@ app.put("/surveys/:id",
     validateJSONRequest("survey"),
     asyncHandler(async (req, res) => {
         let id = req.params["id"];
-        await surveyService.createSurvey(id, req.body)
+        await surveyService.saveSurvey(id, req.body)
         res.sendStatus(201);
     })
 );
 
-app.post("/responses", 
+app.post("/surveys/:surveyId/responses", 
     validateJSONRequest("response"),
     asyncHandler(async (req, res) => {
-        await responseService.saveResponses(req.body);
+        let surveyId = req.params["surveyId"];
+        await responseService.saveResponses(surveyId, req.body);
         res.sendStatus(201);
     })
 );
@@ -60,7 +58,7 @@ app.use(function (err, req, res, next) {
     else {
         log.error(err);
     }
-    handleError(res, err);
+    errorHandler(res, err);
 });
 
 

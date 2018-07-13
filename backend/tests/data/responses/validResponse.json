@@ -1,9 +1,6 @@
 {
-    "surveyId": "job",
-    "responses": {
-    	"name": "Jürgen Albertsen",
-    	"department": "prodDev",
-    	"jobHappiness": 5,
-    	"comment": "Nope"
-    }
+	"name": "Jürgen Albertsen",
+	"department": "prodDev",
+	"jobHappiness": 5,
+	"comment": "Nope"
 }

@@ -1,27 +1,18 @@
-const path = require("path");
-const mkdirp = require("mkdirp");
-const dateFormat = require("dateformat");
-const uuid = require("uuid/v4");
 const config = require("../config");
-const log = require("../log");
-const JSONData = require("../json/JSONData");
 const surveyService = require("./SurveyService");
 const responseValidationService = require("./ResponseValidationService")
+const jsonStorageService = require("./JSONStorageService");
 const ValidationError = require('../errors/ValidationError');
+const daos = require("../daos");
 
 class ResponseService {
     
-    async saveResponses(response) {
-        let surveyId = response.surveyId;
-        if (!surveyId) throw new Error("Response doens't have a survey ID");
+    async saveResponses(surveyId, response) {
+        if (!surveyId) throw new Error("Survey ID cannot be null");
         let survey = await surveyService.getSurvey(surveyId)
-        let dir = path.normalize(config.dirs.responses + "/" + surveyId);
-        mkdirp.sync(dir);
-        let timestamp = dateFormat(new Date(), "yyyymmdd-HHMMss");
-        let file = path.normalize(dir + "/" + timestamp + "-" + uuid() + ".json");
-        let validationErrors = responseValidationService.validate(survey, response.responses);
+        let validationErrors = responseValidationService.validate(survey, response);
         if (validationErrors) throw new ValidationError(validationErrors);
-        return await new JSONData(response).writeToFile(file);
+        return daos.response.createResponse(surveyId, response);
     }
 }
 

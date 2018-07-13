@@ -47,10 +47,10 @@ const validators = {
 
 class ResponseValidationService {
 
-    validate(survey, responses) {
+    validate(survey, response) {
         let errors =  survey.questions.reduce((allErrors, q) => {
             let valueErrors = [];
-            let value = responses[q.id];
+            let value = response[q.id];
             let validator = validators.types[q.type];
             if (validator) {
                 validator(value, q, valueErrors);

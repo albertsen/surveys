@@ -21,11 +21,7 @@ class SurveyService {
   }
 
   saveResponses(surveyId, responses, callbacks) {
-    let payload = {
-      surveyId: surveyId,
-      responses: responses
-    }
-    return client.post("/responses", payload)
+    return client.post("/surveys/" + surveyId + "/responses", responses)
       .then(res => callbacks.onSuccess(res))
       .catch(err => {
         if (err.response && err.response.status == 422) {

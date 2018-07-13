@@ -49,11 +49,15 @@ const invalidResponse = require('./data/responses/invalidResponse.json');
 
 describe("Response API", function () {
     it("should save a resposse", () => {
-        let response = chakram.post(url + "/responses", validResponse);
+        let response = chakram.post(url + "/surveys/job/responses", validResponse);
         return expect(response).to.have.status(201);
     });
+    it("should return a 'not found' error", () => {
+        let response = chakram.post(url + "/surveys/doesnotexist/responses", validResponse);
+        return expect(response).to.have.status(404);
+    });
     it("should return a schema validation error", () => {
-        let response = chakram.post(url + "/responses", { "areYouInvalid": true });
+        let response = chakram.post(url + "/surveys/job/responses", { "areYouInvalid": { "iam": true } });
         expect(response).to.have.status(400);
         expect(response).to.comprise.of.json({
             "status": 400,
@@ -63,7 +67,7 @@ describe("Response API", function () {
         return chakram.wait();
     });
     it("should raise a validation error", () => {
-        let response = chakram.post(url + "/responses", invalidResponse);
+        let response = chakram.post(url + "/surveys/job/responses", invalidResponse);
         expect(response).to.have.status(422);
         expect(response).to.comprise.of.json(
             {
