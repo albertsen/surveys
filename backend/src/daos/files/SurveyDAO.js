@@ -1,7 +1,6 @@
 const glob = require("glob-promise");
 const path = require("path");
-const fs = require("fs");
-const config = require("../../config");
+const config = require("../../config").storage.config;
 const jsonStorageService = require("../../services/JSONStorageService");
 
 class SurveyDAO {

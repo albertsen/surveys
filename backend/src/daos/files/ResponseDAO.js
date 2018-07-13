@@ -2,7 +2,7 @@ const path = require("path");
 const mkdirp = require("mkdirp");
 const dateFormat = require("dateformat");
 const uuid = require("uuid/v4");
-const config = require("../../config");
+const config = require("../../config").storage.config;
 const jsonStorageService = require("../../services/JSONStorageService");
 
 class ResponseDAO {
