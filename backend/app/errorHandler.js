@@ -1,6 +1,7 @@
 const ValidationError = require("./errors/ValidationError");
 const NotFoundError = require("./errors/NotFoundError");
 const JSONValidationError = require("./errors/JSONValidationError");
+const log = require("./log");
 
 
 const errorMappings = (function(mappings) {
@@ -45,6 +46,12 @@ function sendError(res, message, status = 500, code = "ERROR", details = null) {
 };
 
 function errorHandler(res, error) {
+    if (error.stack) {
+        log.error(error.stack);
+    }
+    else {
+        log.error(error);
+    }
     let errorMapping = errorMappings[error.constructor];
     if (errorMapping) {
         sendError(

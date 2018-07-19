@@ -52,12 +52,6 @@ app.post("/surveys/:surveyId/responses",
 
 // Error handler
 app.use(function (err, req, res, next) {
-    if (err.stack) {
-        log.error(err.stack);
-    }
-    else {
-        log.error(err);
-    }
     errorHandler(res, err);
 });
 
