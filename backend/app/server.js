@@ -50,11 +50,6 @@ app.post("/surveys/:surveyId/responses",
     })
 );
 
-// Error handler
-app.use(function (err, req, res, next) {
-    errorHandler(res, err);
-});
-
-
+app.use(errorHandler);
 
 app.listen(3000, () => log.info("Server listening on port 3000!"));

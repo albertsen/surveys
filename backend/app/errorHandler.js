@@ -45,28 +45,28 @@ function sendError(res, message, status = 500, code = "ERROR", details = null) {
     sendStatus(res, status, body);
 };
 
-function errorHandler(res, error) {
-    if (error.stack) {
-        log.error(error.stack);
+function errorHandler(err, req, res, next) {
+    if (err.stack) {
+        log.error(err.stack);
     }
     else {
-        log.error(error);
+        log.error(err);
     }
-    let errorMapping = errorMappings[error.constructor];
+    let errorMapping = errorMappings[err.constructor];
     if (errorMapping) {
         sendError(
             res,
             errorMapping.message,
             errorMapping.status,
             errorMapping.errorCode,
-            error[errorMapping.detailsAttribute]
+            err[errorMapping.detailsAttribute]
         )
     }
-    else if (error.message) {
-        sendError(res, error.message);
+    else if (err.message) {
+        sendError(res, err.message);
     }
     else {
-        sendError(res, JSON.stringify(error));
+        sendError(res, JSON.stringify(err));
     }
 };
 

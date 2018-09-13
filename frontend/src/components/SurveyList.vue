@@ -1,15 +1,11 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <div class="py-5 text-center">
-        <h1>Available Surveys</h1>
-        <ul class="survey-list">
-          <li v-for="s in surveys" v-bind:key="s.id">
-            <router-link :to="{ name: 'surveys', params: { id: s.id }}">{{s.title}}</router-link>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <div class="py-5 text-center">
+    <h1>Available Surveys</h1>
+    <ul class="survey-list">
+      <li v-for="s in surveys" v-bind:key="s.id">
+        <router-link :to="{ name: 'survey', params: { id: s.id }}">{{s.title}}</router-link>
+      </li>
+    </ul>
   </div>
 </template>
 

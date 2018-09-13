@@ -26,7 +26,7 @@ describe("Survey API", function () {
         expect(response).to.comprise.of.json(
             [{
                 "id": "job",
-                "title": "Job Survey"
+                "title": "Job"
             }]
         );
         return chakram.wait();

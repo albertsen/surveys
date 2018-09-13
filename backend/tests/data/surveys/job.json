@@ -1,6 +1,6 @@
 {
     "id": "job",
-    "title": "Job Survey",
+    "title": "Job",
     "questions": [
         {
             "id": "name",

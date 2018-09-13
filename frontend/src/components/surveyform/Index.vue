@@ -1,9 +1,5 @@
 <template>
   <div id="survey">
-    <div class="container">
-      <div class="row justify-content-md-center" style="margin-top: 1em">
-        <a href="/">Back</a>
-      </div>
       <div class="py-5 text-center">
         <h1>{{ survey.title }}</h1>
       </div>
@@ -20,7 +16,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -36,6 +31,7 @@ export default {
         onSuccess: res => {
           this.responses = {};
           this.validationResult = {};
+          this.$router.push("/thankyou");
         },
         onValidationError: errors => {
           console.log("Errors: " + JSON.stringify(errors));
@@ -46,7 +42,6 @@ export default {
             }
             return result;
           }, {});
-          console.log("Validation result: " + JSON.stringify(this.validationResult));
         }
       });
     },
@@ -69,6 +64,7 @@ export default {
   created() {
     surveyService.getSurvey(this.$route.params.id).then(response => {
       this.survey = response.data;
+      document.title = "Survey: " + this.survey.title;
     });
   }
 };
