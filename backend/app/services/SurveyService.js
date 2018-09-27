@@ -6,8 +6,8 @@ class SurveyService {
     async saveSurvey(id, survey) {
         if (!id) throw new Error("No ID given for new survey");
         if (!survey) throw new Error ("No survey given to create");
-        if (id != survey.id) throw new Error("ID of survey document doesn't match given ID");
-        dao.createOrUpdateSurvey(id, survey);
+        if (id != survey._id) throw new Error("ID of survey document doesn't match given ID");
+        await dao.createOrUpdateSurvey(id, survey);
     }
 
     async getSurvey(id) {
@@ -19,7 +19,7 @@ class SurveyService {
     }
 
     async getSurveys() {
-        return dao.findSurveySummaries();
+        return await dao.findSurveySummaries();
     }
 
 }

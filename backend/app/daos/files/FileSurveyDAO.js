@@ -3,7 +3,7 @@ const path = require("path");
 const config = require("../../config").storage.config;
 const jsonStorageService = require("../../services/JSONStorageService");
 
-class SurveyDAO {
+class FileSurveyDAO {
     
     _fileNameForSurvey(id) {
         return path.normalize(config.dirs.surveys + "/" + id + ".json");
@@ -39,4 +39,4 @@ class SurveyDAO {
 
 }
 
-module.exports = new SurveyDAO();
+module.exports = new FileSurveyDAO();

@@ -5,7 +5,7 @@ const uuid = require("uuid/v4");
 const config = require("../../config").storage.config;
 const jsonStorageService = require("../../services/JSONStorageService");
 
-class ResponseDAO {
+class FileResponseDAO {
 
     async createResponse(surveyId, response) {
         let dir = path.normalize(config.dirs.responses + "/" + surveyId);
@@ -17,4 +17,4 @@ class ResponseDAO {
 
 }
 
-module.exports = new ResponseDAO();
+module.exports = new FileResponseDAO();

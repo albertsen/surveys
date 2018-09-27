@@ -9,6 +9,6 @@ Object.values(config.storage.config.dirs).forEach(d => {
 });
 
 module.exports = {
-    response: require("./ResponseDAO"),
-    survey: require("./SurveyDAO")
+    response: require("./FileResponseDAO"),
+    survey: require("./FileSurveyDAO")
 }

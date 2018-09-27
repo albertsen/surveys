@@ -25,7 +25,7 @@ describe("Survey API", function () {
         expect(response).to.have.status(200);
         expect(response).to.comprise.of.json(
             [{
-                "id": "job",
+                "_id": "job",
                 "title": "Job"
             }]
         );

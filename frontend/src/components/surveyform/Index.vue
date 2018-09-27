@@ -27,7 +27,7 @@ export default {
   components: questions,
   methods: {
     submit: function() {
-      surveyService.saveResponses(this.survey.id, this.responses, {
+      surveyService.saveResponses(this.survey._id, this.responses, {
         onSuccess: res => {
           this.responses = {};
           this.validationResult = {};
