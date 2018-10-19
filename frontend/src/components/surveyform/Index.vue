@@ -34,7 +34,6 @@ export default {
           this.$router.push("/thankyou");
         },
         onValidationError: errors => {
-          console.log("Errors: " + JSON.stringify(errors));
           this.validationResult = errors.reduce((result, e) => {
             result[e.questionId] = {
               valid: false,

@@ -10,7 +10,11 @@ class ResponseService {
         let survey = await surveyService.getSurvey(surveyId)
         let validationErrors = responseValidationService.validate(survey, response);
         if (validationErrors) throw new ValidationError(validationErrors);
-        return dao.createResponse(surveyId, response);
+        return await dao.createResponse(surveyId, response);
+    }
+
+    async getResponsesForSurvey(surveyId) {
+        return await dao.findResponsesForSurvey(surveyId);
     }
 }
 

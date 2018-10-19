@@ -11,9 +11,7 @@ class MongoSurveyDAO extends GenericDAO {
     }
 
     async findSurveySummaries() {
-        let docs = await this.collection().find({ }).project({ title: true }).toArray();
-        console.log(JSON.stringify(docs));
-        return docs;
+        return await this.collection().find({ }).project({ title: true }).toArray();
     }
 
 }

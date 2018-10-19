@@ -50,6 +50,15 @@ app.post("/surveys/:surveyId/responses",
     })
 );
 
+app.get("/surveys/:surveyId/responses", 
+    asyncHandler(async (req, res) => {
+        let surveyId = req.params["surveyId"];
+        let responses = await responseService.getResponsesForSurvey(surveyId);
+        res.json(responses);
+    })
+);
+
+
 app.use(errorHandler);
 
 app.listen(3000, () => log.info("Server listening on port 3000!"));
